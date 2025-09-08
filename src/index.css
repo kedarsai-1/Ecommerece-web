@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+.no-daisy * {
+    all: unset;
+    all: revert;
+  }
+  
