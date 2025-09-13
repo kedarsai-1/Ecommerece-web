@@ -11,6 +11,7 @@ const Body = ()=>{
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [count,setcount]= useState(0);
 
   const fetchUser  = async()=>{
     if(userData){
@@ -47,8 +48,9 @@ const Body = ()=>{
 
   return(
     <>
-      <NavBar setSearchTerm={setSearchTerm}/>
-      <Outlet context={{ searchTerm }}/>
+      <NavBar setSearchTerm={setSearchTerm}  count = {count}/>
+      <Outlet context={{ searchTerm ,setcount,count }}/>
+
     </>
   )
 }
