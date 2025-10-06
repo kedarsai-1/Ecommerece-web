@@ -38,7 +38,7 @@ const Editprofile=({user})=>{
             dispatch(addUser(res?.data?.data))
             if(isShopOwner === true )
             {
-              navigate("/seller")
+              navigate("/sellershopview")
             }
             else{
               navigate("/")
@@ -55,7 +55,7 @@ const Editprofile=({user})=>{
             seterror(err.response.data);
 
         }
-        isShopOwner === true? navigate("/seller"): navigate("/")
+        isShopOwner === true? navigate("/sellershopview"): navigate("/")
     }
     return(
         <div>

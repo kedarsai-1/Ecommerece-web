@@ -37,7 +37,7 @@ const Login = ()=>{
     const res= await axios.post("http://localhost:4545/login",{emailId,Password},{withCredentials:true})
     console.log(res)
     dispatch(addUser(res.data))
-   res.data.isShopOwner === true ? navigate("/") : navigate("/")
+   res.data.isShopOwner === true ? navigate("/sellershopview") : navigate("/")
     
     
     

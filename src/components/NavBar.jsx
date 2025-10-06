@@ -31,16 +31,28 @@ const NavBar =({ setSearchTerm,count })=>{
         <>
         <div className="navbar bg-base-300 shadow-sm min-h-12 py-0 px-4">
   <div className="flex-1">
+    {isShopOwner &&(
+    <Link to ="/sellershopview" className="btn btn-ghost text-xl">🛍️Bamazon </Link>
+    )
+  }
+   {!isShopOwner &&(
     <Link to ="/" className="btn btn-ghost text-xl">🛍️Bamazon </Link>
+    )
+  }
+
    
   </div>
   {user &&(
   <div className="flex items-center gap-2">
+    {!isShopOwner &&(
     <p className="cursor-pointer">
+      
       <Link to ="/bag">
       🛒-{count}
       </Link>
       </p>
+    )
+  }
       
     <input type="text" placeholder="Search"  onChange={(e) => setSearchTerm(e.target.value)}
         className="input input-bordered input-sm w-24 md:w-auto" />
