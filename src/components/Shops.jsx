@@ -1,5 +1,5 @@
 import axios from "axios";
-import Card from "./card"
+import Card from "./Card.jsx"
 import { BASE_URL } from "../utils/constants";
 import { useEffect,useState} from "react";
 import { useOutletContext} from "react-router-dom";
