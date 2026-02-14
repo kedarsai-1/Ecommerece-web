@@ -10,8 +10,10 @@ import Profile from "./components/Profile";
 import Items from "./components/Items";
 import Sellershop from "./components/Sellershop";
 import Itemsview from "./components/Itemsview";
-import Bag from  "./components/Bag"
+import Bag from  "./components/Bag";
 import Sellershopview from "./components/Sellershopsview";
+import Success from "./components/Success";
+import Failure from "./components/Failure";
 
 function AppWrapper() {
   const location = useLocation();
@@ -30,6 +32,8 @@ function AppWrapper() {
           <Route path = '/itemsview/:shopId' element ={<Itemsview/>}/>
           <Route path ='/bag' element={<Bag/>}/>
           <Route path ='/sellershopview' element={<Sellershopview/>}/>
+          <Route path ="/success" element={<Success/>}/>
+          <Route path ="/failure" element={<Failure/>}/>
         </Route>
       </Routes>
     </div>

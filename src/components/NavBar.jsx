@@ -48,7 +48,7 @@ const NavBar =({ setSearchTerm,count })=>{
     <p className="cursor-pointer">
       
       <Link to ="/bag">
-      🛒-{count}
+      🛒 {count}
       </Link>
       </p>
     )

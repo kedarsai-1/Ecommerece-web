@@ -37,5 +37,15 @@ const itemSlice = createSlice({
   }
 });
 
+// Selector to get total count of items in bag
+export const selectTotalItems = (state) => {
+  return state.bag.items.reduce((total, item) => total + item.quantity, 0);
+};
+
+// Selector to get total unique items in bag
+export const selectUniqueItemsCount = (state) => {
+  return state.bag.items.length;
+};
+
 export const { additems, removeitems, clearBag } = itemSlice.actions;
 export default itemSlice.reducer;

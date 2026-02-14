@@ -1,6 +1,7 @@
 import { useRef,useState,useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '../utils/userSlice';
+import { selectTotalItems } from '../utils/itemSlice';
 import { useNavigate, Outlet } from 'react-router-dom';
 import axios from 'axios';
 import NavBar from './NavBar';
@@ -11,7 +12,7 @@ const Body = ()=>{
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [count,setcount]= useState(0);
+  const count = useSelector(selectTotalItems);
 
   const fetchUser  = async()=>{
     if(userData){
@@ -49,7 +50,7 @@ const Body = ()=>{
   return(
     <>
       <NavBar setSearchTerm={setSearchTerm}  count = {count}/>
-      <Outlet context={{ searchTerm ,setcount,count }}/>
+      <Outlet context={{ searchTerm }}/>
 
     </>
   )

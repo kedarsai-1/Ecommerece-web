@@ -2,12 +2,14 @@ import { useState } from "react";
 import { useDispatch, useSelector} from "react-redux";
 import { addUser } from "../utils/userSlice";
 import axios from "axios"
+import PngUploader from "./PngUploader";
 import { useNavigate } from "react-router-dom";
 const Editprofile=({user})=>{
     const navigate = useNavigate();
     const [FirstName,setFirstName] = useState(user?.FirstName || "");
     const [LastName,setLastName] = useState(user?.LastName || "");
-    const [isShopOwner,setIsShopOwner] = useState(user?.isShopOwner || "")
+const [isShopOwner, setIsShopOwner] = useState(!!user?.isShopOwner);
+
     const [photoUrl,setphotoUrl] = useState(user?.photoUrl || "");
     const [Address,setAddress] = useState(user?.Address || "")
     const [error,seterror]=useState("");
@@ -88,6 +90,8 @@ const Editprofile=({user})=>{
  onChange={(e)=>{
     setphotoUrl(e.target.value)
   }}/>
+  <div className="text-xs text-base-content/70 mt-1">Or upload a PNG:</div>
+  <PngUploader onUploaded={(url) => setphotoUrl(url)} />
   </fieldset>
 
 

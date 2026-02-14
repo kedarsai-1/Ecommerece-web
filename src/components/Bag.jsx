@@ -1,12 +1,57 @@
 import { useSelector, useDispatch } from "react-redux";
 import { clearBag, additems, removeitems } from "../utils/itemSlice";
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
+import { loadStripeScript, redirectToCheckout } from "../utils/stripe";
 
 const Bag = () => {
   const bagItems = useSelector((store) => store.bag.items); 
+  const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
 
   const handleClearCart = () => {
     dispatch(clearBag());
+  };
+
+  const handleCheckout = async () => {
+    try {
+      // Send cart items to backend to create a Stripe Checkout Session
+      const payload = {
+        items: bagItems?.map((i) => ({
+          name: i.name,
+          quantity: i.quantity,
+          // Send price info; backend should construct price_data in INR
+          price: i.price,
+        })),
+        customer: {
+          name: user?.FirstName ? `${user.FirstName} ${user?.LastName || ''}`.trim() : undefined,
+          email: user?.emailId || undefined,
+        },
+      };
+
+      const res = await axios.post(`${BASE_URL}/stripe/create-checkout-session`, payload, {
+        withCredentials: true,
+      });
+
+      const { url, id: sessionId } = res.data || {};
+      // Prefer server-provided URL redirect (no Stripe.js required)
+      if (url) {
+        window.location.href = url;
+        return;
+      }
+
+      // Fallback: use Stripe.js redirect if only sessionId is provided
+      if (sessionId) {
+        await loadStripeScript();
+        await redirectToCheckout(sessionId);
+        return;
+      }
+
+      throw new Error('No session url or sessionId returned from backend');
+    } catch (err) {
+      console.error('Stripe checkout error:', err);
+      alert('Unable to start checkout. Please try again or contact support.');
+    }
   };
 
   if (bagItems?.length === 0) {
@@ -88,6 +133,7 @@ const Bag = () => {
 
           <button
             className="w-full p-3 bg-black text-white rounded-xl shadow-md hover:bg-gray-800 transition mb-3"
+            onClick={handleCheckout}
           >
             Proceed to Checkout
           </button>

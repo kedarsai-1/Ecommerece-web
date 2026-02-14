@@ -11,17 +11,13 @@ const Itemsview = () => {
   const [loading, setLoading] = useState(true);
   const [openIndex, setOpenIndex] = useState(null);
   const dispatch = useDispatch();
-  const { setcount, count } = useOutletContext();
+  const { searchTerm } = useOutletContext();
 
   const handleadd = (item) => {
-    setcount(count + 1);
     dispatch(additems(item));
   };
 
   const handleremove = (item) => {
-    if (count > 0) {
-      setcount(count - 1);
-    }
     dispatch(removeitems(item));
   };
 
