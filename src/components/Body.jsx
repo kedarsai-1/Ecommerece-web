@@ -20,7 +20,7 @@ const Body = ()=>{
       return;
     }
     try{
-      const res = await axios.get("http://localhost:4545/profile/view",{withCredentials:true});
+      const res = await axios.get(BASE_URL + "/profile/view",{withCredentials:true});
       dispatch(addUser(res.data));
     }
     catch(err){

@@ -16,7 +16,7 @@ const NavBar =({ setSearchTerm,count })=>{
   
     const handlelogout = async()=>{
         try{
-            await axios.post("http://localhost:4545/logout",{},{withCredentials:true})
+            await axios.post(BASE_URL + "/logout",{},{withCredentials:true})
             dispatch(removeUser());
             return navigate("/login")
             

@@ -34,7 +34,7 @@ const Login = ()=>{
     const Password = password.current.value;
    
     try{
-    const res= await axios.post("http://localhost:4545/login",{emailId,Password},{withCredentials:true})
+    const res= await axios.post("http://:4545/login",{emailId,Password},{withCredentials:true})
     console.log(res)
     dispatch(addUser(res.data))
    res.data.isShopOwner === true ? navigate("/sellershopview") : navigate("/")
@@ -59,7 +59,7 @@ const Login = ()=>{
   
     try {
       await axios.post(
-        "http://localhost:4545/signup",
+        BASE_URL + "/signup",
         {
           FirstName: firstNameVal,
           LastName: lastNameVal,
