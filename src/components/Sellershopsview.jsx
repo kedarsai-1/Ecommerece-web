@@ -1,7 +1,7 @@
 import axios from "axios"
 import { BASE_URL } from "../utils/constants"
 import { useState,useEffect } from "react"
-import Card from "./card"
+import Card from "./Card"
 import { Link } from "react-router-dom"
 
 const Sellershopview=()=>{
