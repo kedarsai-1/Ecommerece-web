@@ -3,11 +3,13 @@ import { clearBag, additems, removeitems } from "../utils/itemSlice";
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { loadStripeScript, redirectToCheckout } from "../utils/stripe";
+import { useNavigate } from "react-router-dom";
 
 const Bag = () => {
   const bagItems = useSelector((store) => store.bag.items); 
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleClearCart = () => {
     dispatch(clearBag());
@@ -27,6 +29,8 @@ const Bag = () => {
           name: user?.FirstName ? `${user.FirstName} ${user?.LastName || ''}`.trim() : undefined,
           email: user?.emailId || undefined,
         },
+        // Helps backend build correct success/cancel URLs in production
+        origin: window.location.origin,
       };
 
       const res = await axios.post(`${BASE_URL}/stripe/create-checkout-session`, payload, {
@@ -49,8 +53,20 @@ const Bag = () => {
 
       throw new Error('No session url or sessionId returned from backend');
     } catch (err) {
+      const status = err?.response?.status;
+      if (status === 401) {
+        navigate("/login", { replace: true });
+        return;
+      }
+
+      const backendMsg =
+        err?.response?.data?.message ??
+        err?.response?.data?.error ??
+        err?.response?.data;
+
+      const msg = backendMsg || err?.message || "Unknown error";
       console.error('Stripe checkout error:', err);
-      alert('Unable to start checkout. Please try again or contact support.');
+      alert(`Unable to start checkout. ${status ? `(${status}) ` : ""}${String(msg)}`);
     }
   };
 
