@@ -4,6 +4,7 @@ import { addUser } from "../utils/userSlice";
 import axios from "axios"
 import PngUploader from "./PngUploader";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../utils/constants";
 const Editprofile=({user})=>{
     const navigate = useNavigate();
     const [FirstName,setFirstName] = useState(user?.FirstName || "");
@@ -29,7 +30,7 @@ const [isShopOwner, setIsShopOwner] = useState(!!user?.isShopOwner);
         
        
         try{
-            const res = await axios.patch("http://localhost:4545/profile/edit",{
+            const res = await axios.patch(`${BASE_URL}/profile/edit`,{
                 FirstName,LastName,photoUrl,Address,isShopOwner:isShopOwner
               
 
