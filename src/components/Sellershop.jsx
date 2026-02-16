@@ -1,12 +1,9 @@
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import PngUploader from "./PngUploader";
 
 const Sellershop = () => {
-  const navigate = useNavigate();
-
   const [name, setname] = useState("");
   const [bannerUrl, setbannerUrl] = useState(
     "https://img.freepik.com/premium-vector/add-paper-icon-vector-image-can-be-used-ui_120816-168697.jpg"
@@ -16,19 +13,12 @@ const Sellershop = () => {
 
   const AddShops = async () => {
     try {
-      const res = await axios.post(
+      await axios.post(
         BASE_URL + "/shops",
         { name, bannerUrl, category, Address },
         { withCredentials: true }
       );
-
-      const createdShopId = res.data._id; // 👈 important
       alert("Shop added successfully ✅");
-
-      // 🚀 redirect to items page with shopId
-      navigate(`/items/${createdShopId}`);
-
-
     } catch (err) {
       console.log(err.message);
     }
@@ -44,49 +34,65 @@ const Sellershop = () => {
           Add New Shop
         </h2>
 
-        <input
-          type="text"
-          value={name}
-          className="input input-sm w-full border p-2 my-2"
-          placeholder="Enter shop name"
-          onChange={(e) => setname(e.target.value)}
-        />
+        <fieldset className="fieldset my-3">
+          <legend className="fieldset-legend text-sm">Name</legend>
+          <input
+            type="text"
+            value={name}
+            className="input input-sm w-full border border-gray-300 rounded-md p-2"
+            placeholder="Enter shop name"
+            onChange={(e) => setname(e.target.value)}
+          />
+        </fieldset>
 
-        <input
-          type="text"
-          value={bannerUrl}
-          className="input input-sm w-full border p-2 my-2"
-          placeholder="Enter image URL"
-          onChange={(e) => setbannerUrl(e.target.value)}
-        />
+        <fieldset className="fieldset my-3">
+          <legend className="fieldset-legend text-sm">Banner URL</legend>
+          <input
+            type="text"
+            value={bannerUrl}
+            className="input input-sm w-full border border-gray-300 rounded-md p-2"
+            placeholder="Enter image URL"
+            onChange={(e) => setbannerUrl(e.target.value)}
+          />
+          <img
+            src={bannerUrl}
+            alt="preview"
+            className="mt-2 rounded-md shadow-sm w-full h-28 object-cover"
+          />
+        </fieldset>
 
-        <img src={bannerUrl} className="mt-2 w-full h-28 object-cover rounded" />
+        <div className="text-xs text-base-content/70 mt-1">Or upload a PNG:</div>
+  <PngUploader onUploaded={(url) => setbannerUrl(url)} />
+  
 
-        <div className="text-xs mt-1">Or upload PNG:</div>
-        <PngUploader onUploaded={(url) => setbannerUrl(url)} />
 
-        <input
-          type="text"
-          value={category}
-          className="input input-sm w-full border p-2 my-2"
-          placeholder="Category"
-          onChange={(e) => setcategory(e.target.value)}
-        />
+        <fieldset className="fieldset my-3">
+          <legend className="fieldset-legend text-sm">Category</legend>
+          <input
+            type="text"
+            value={category}
+            className="input input-sm w-full border border-gray-300 rounded-md p-2"
+            placeholder="Type category"
+            onChange={(e) => setcategory(e.target.value)}
+          />
+        </fieldset>
 
+        <h6 className="font-bold text-sm mt-3">Address</h6>
         <textarea
-          className="textarea w-full border p-2 my-2"
+          className="textarea textarea-bordered w-full border-gray-300 rounded-md p-2"
           placeholder="Enter shop address"
           value={Address}
           onChange={(e) => setAddress(e.target.value)}
         />
 
-        <button
-          type="button"
-          className="btn btn-primary w-full mt-4"
-          onClick={AddShops}
-        >
-          Submit
-        </button>
+        <div className="flex justify-center mt-6">
+          <button
+            className="btn btn-primary w-full"
+            onClick={AddShops}
+          >
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );

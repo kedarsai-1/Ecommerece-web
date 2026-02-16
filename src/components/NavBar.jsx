@@ -82,9 +82,11 @@ const NavBar =({ setSearchTerm,count })=>{
            
           </Link>
           {isShopOwner && (
-  <Link to="/sellershopview">My Shops</Link>
-)}
+            <Link to = "/items" >Add Items
 
+            </Link>
+          )}
+          
 
         </li>
         <li></li>
