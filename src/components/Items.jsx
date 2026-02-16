@@ -3,10 +3,13 @@ import { useState } from "react";
 import { BASE_URL } from "../utils/constants";
 import { useLocation } from "react-router-dom";
 import PngUploader from "./PngUploader";
+import { useParams } from "react-router-dom";
+
+
+
 
 const Items = () => {
-  const location = useLocation();
-  const shopId = location.state?.shopId; // 👈 auto received
+  const { shopId } = useParams();// 👈 auto received
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");

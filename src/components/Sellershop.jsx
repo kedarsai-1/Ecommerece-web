@@ -26,7 +26,8 @@ const Sellershop = () => {
       alert("Shop added successfully ✅");
 
       // 🚀 redirect to items page with shopId
-      navigate("/items", { state: { shopId: createdShopId } });
+      navigate(`/items/${createdShopId}`);
+
 
     } catch (err) {
       console.log(err.message);
