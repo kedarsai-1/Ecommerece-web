@@ -1,152 +1,169 @@
-import {useRef,useState} from 'react';
-import { Validate } from '../utils/Validate';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { addUser } from '../utils/userSlice';
-import Header from './Header';
-import { BASE_URL } from '../utils/constants';
+import { useRef, useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
+import Header from "./Header";
+import { BASE_URL } from "../utils/constants";
 
-const Login = ()=>{
+const Login = () => {
   const dispatch = useDispatch();
-  const [signin,setsignin] = useState (true);
-  const userData = useSelector((store)=>store.user)
-  const[errorMessage,seterrorMessage]= useState(null);
+  const navigate = useNavigate();
+
+  const [signin, setsignin] = useState(true);
+  const [errorMessage, seterrorMessage] = useState(null);
+  const [isShopOwner, setIsShopOwner] = useState(false);
+
   const email = useRef(null);
   const password = useRef(null);
   const phonenumber = useRef(null);
   const FirstName = useRef(null);
   const LastName = useRef(null);
-  const [isShopOwner,setIsShopOwner]=useState(false)
 
-  const navigate = useNavigate();
-
-  
-  
-  const togglesignin=()=>{
+  const togglesignin = () => {
     setsignin(!signin);
-   
+    seterrorMessage(null);
+  };
 
-    
-  }
- 
-  const handlelogin =async()=>{
+  // ✅ LOGIN
+  const handlelogin = async () => {
     const emailId = email.current.value;
     const Password = password.current.value;
-   
-    try{
-    const res= await axios.post(BASE_URL + "/login",{emailId,Password},{withCredentials:true})
-    console.log(res)
-    dispatch(addUser(res.data))
-   res.data.isShopOwner === true ? navigate("/sellershopview") : navigate("/")
-    
-    
-    
-    }
-    catch(err){
-      seterrorMessage(err?.response?.data||"something went wrong")
-    }
-   
 
-   
-  }
-  
+    try {
+      const res = await axios.post(
+        BASE_URL + "/login",
+        { emailId, Password },
+        { withCredentials: true }
+      );
+
+      dispatch(addUser(res.data));
+
+      res.data.isShopOwner === true
+        ? navigate("/sellershopview")
+        : navigate("/");
+    } catch (err) {
+      seterrorMessage(err?.response?.data || "Something went wrong");
+    }
+  };
+
+  // ✅ SIGNUP
   const handlesignup = async () => {
     const emailId = email.current.value;
     const Password = password.current.value;
-    const firstNameVal = FirstName.current.value; 
-    const lastNameVal = LastName.current.value;   
-    const phoneNumberVal = phonenumber.current.value;
-  
+
     try {
       await axios.post(
         BASE_URL + "/signup",
         {
-          FirstName: firstNameVal,
-          LastName: lastNameVal,
+          FirstName: FirstName.current.value,
+          LastName: LastName.current.value,
           emailId,
           Password,
-          PhoneNumber: phoneNumberVal,
-          isShopOwner:isShopOwner,
+          PhoneNumber: phonenumber.current.value,
+          isShopOwner,
         },
         { withCredentials: true }
       );
+
       navigate("/profile");
     } catch (err) {
-      seterrorMessage(err?.response?.data || "something went wrong");
+      seterrorMessage(err?.response?.data || "Something went wrong");
     }
   };
-  
-    return(
-      <>
-    
-  <Header/>
 
+  return (
+    <>
+      <Header />
 
-    
-  <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-slate-900 to-slate-800">
-         
+      <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-slate-900 to-slate-800 px-4">
         <form
-    className="w-full max-w-md p-10 bg-gray-300 text-white rounded-xl shadow-xl"
-    onSubmit={(e)=>e.preventDefault()}
-  >
+          onSubmit={(e) => e.preventDefault()}
+          className="w-full max-w-md bg-white/20 backdrop-blur-lg border border-white/20 text-white rounded-2xl shadow-2xl p-8 flex flex-col gap-4"
+        >
+          <h2 className="text-2xl font-bold text-center">
+            {signin ? "Sign In" : "Create Account"}
+          </h2>
 
-         {!signin ? (
-        
-            <input ref={phonenumber} type="text"
-            placeholder='Mobile'
-            className="p-4 m-4 text-black"/> 
-            ):
-            (<div className='hidden'></div>)
-          }
-        {!signin ? (
-            <input ref={FirstName} type="text"
-            placeholder='FirstName'
-            className="p-4 m-4 text-black"/>
-          ):
-          (<div className='hidden'></div>)
-        }
-        {!signin ? (
-            <input ref={LastName} type="text"
-            placeholder='LastName'
-            className="p-4 m-4 text-black"/>
-          ):
-          (<div className='hidden'></div>)
-        }
-        { !signin ?(
-          <fieldset className="fieldset bg-base-100 border-base-300 rounded-box w-64 border p-4">
-        <label>
-        <input
-          type="checkbox"
-          checked={isShopOwner}   // controlled by state
-          onChange={(e) => setIsShopOwner(e.target.checked)} // update state
-        />
-        Are you a shop owner?
-      </label>
-        </fieldset>
-        
+          {/* SIGNUP FIELDS */}
+          {!signin && (
+            <>
+              <input
+                ref={phonenumber}
+                type="text"
+                placeholder="Mobile"
+                className="w-full p-3 rounded-lg text-black"
+              />
 
-        ):(<div className='hidden'></div>)}
-         
-           
-            < input ref={email} type= "text" 
-            placeholder="Email" 
-            className="p-4 m-4 text-black"/> 
+              <input
+                ref={FirstName}
+                type="text"
+                placeholder="First Name"
+                className="w-full p-3 rounded-lg text-black"
+              />
 
-            <input ref={password}type="password"
-            placeholder ="password"
-            className="p-4 m-4 text-black"/> 
-             <p className="text-red-500 font-bold p-4">{errorMessage}</p>
+              <input
+                ref={LastName}
+                type="text"
+                placeholder="Last Name"
+                className="w-full p-3 rounded-lg text-black"
+              />
 
+              <label className="flex items-center gap-2 text-sm">
+                <input
+                  type="checkbox"
+                  checked={isShopOwner}
+                  onChange={(e) => setIsShopOwner(e.target.checked)}
+                />
+                Are you a shop owner?
+              </label>
+            </>
+          )}
 
-          <button className ='p-4 m-4 bg-red-600  w-full rounded-lg cursor-pointer'
-           onClick={signin?handlelogin:handlesignup} >
-              {!signin?"Sign Up":"SIGN IN"}</button>
-              <p className="text-red-500 font-bold p-4 cursor-pointer"onClick={togglesignin}>{signin ? "new to this ?":"Already Registered! Sign IN now"}</p>
-          </form>
-          </div>
-          </>
-        
-    )
-}
+          {/* EMAIL */}
+          <input
+            ref={email}
+            type="text"
+            placeholder="Email"
+            className="w-full p-3 rounded-lg text-black"
+          />
+
+          {/* PASSWORD */}
+          <input
+            ref={password}
+            type="password"
+            placeholder="Password"
+            className="w-full p-3 rounded-lg text-black"
+          />
+
+          {/* ERROR MESSAGE */}
+          {errorMessage && (
+            <p className="text-red-400 font-semibold text-sm">
+              {errorMessage}
+            </p>
+          )}
+
+          {/* BUTTON */}
+          <button
+            onClick={signin ? handlelogin : handlesignup}
+            className="w-full p-3 bg-red-600 rounded-lg hover:bg-red-700 transition font-semibold"
+          >
+            {signin ? "SIGN IN" : "SIGN UP"}
+          </button>
+
+          {/* TOGGLE */}
+          <p
+            className="text-center text-sm cursor-pointer hover:underline"
+            onClick={togglesignin}
+          >
+            {signin
+              ? "New here? Create an account"
+              : "Already registered? Sign In"}
+          </p>
+        </form>
+      </div>
+    </>
+  );
+};
+
 export default Login;
