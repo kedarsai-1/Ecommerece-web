@@ -10,18 +10,13 @@ const Sellershop = () => {
     "https://img.freepik.com/premium-vector/add-paper-icon-vector-image-can-be-used-ui_120816-168697.jpg"
   );
   const [category, setCategory] = useState("");
-  const [address, setAddress] = useState("");
+  const [Address, setAddress] = useState("");
 
   const AddShops = async () => {
     try {
       await axios.post(
         BASE_URL + "/shops",
-        {
-          name,
-          bannerUrl,
-          category,
-          Address: address,
-        },
+        { name, bannerUrl, category, Address },
         { withCredentials: true }
       );
 
@@ -33,7 +28,7 @@ const Sellershop = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      
+
       <form
         className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md"
         onSubmit={(e) => e.preventDefault()}
@@ -93,7 +88,7 @@ const Sellershop = () => {
         {/* ADDRESS */}
         <h6 className="font-bold text-sm mt-3">Address</h6>
         <textarea
-          value={address}
+          value={Address}
           placeholder="Enter shop address"
           className="textarea textarea-bordered w-full border-gray-300 rounded-md p-2"
           onChange={(e) => setAddress(e.target.value)}
@@ -102,12 +97,14 @@ const Sellershop = () => {
         {/* SUBMIT BUTTON */}
         <div className="flex justify-center mt-6">
           <button
+            type="button"
             className="btn btn-primary w-full"
             onClick={AddShops}
           >
             Submit
           </button>
         </div>
+
       </form>
 
     </div>

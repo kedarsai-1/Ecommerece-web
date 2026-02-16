@@ -22,10 +22,10 @@ const Items = () => {
       );
 
       setToast(true);
-
       setTimeout(() => {
         setToast(false);
       }, 3000);
+
     } catch (err) {
       console.log(err.message);
     }
@@ -33,12 +33,10 @@ const Items = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
-
       <form
         className="bg-white p-6 rounded-2xl shadow-md w-96 flex flex-col gap-4"
         onSubmit={(e) => e.preventDefault()}
       >
-        {/* NAME */}
         <input
           className="p-3 border rounded-xl"
           type="text"
@@ -47,7 +45,6 @@ const Items = () => {
           onChange={(e) => setName(e.target.value)}
         />
 
-        {/* PRICE */}
         <input
           className="p-3 border rounded-xl"
           type="text"
@@ -56,7 +53,6 @@ const Items = () => {
           onChange={(e) => setPrice(e.target.value)}
         />
 
-        {/* DESCRIPTION */}
         <input
           className="p-3 border rounded-xl"
           type="text"
@@ -85,7 +81,6 @@ const Items = () => {
         <div className="text-xs text-gray-500">Or upload PNG:</div>
         <PngUploader onUploaded={(url) => setImage(url)} />
 
-        {/* SHOP ID */}
         <input
           className="p-3 border rounded-xl"
           type="text"
@@ -94,7 +89,6 @@ const Items = () => {
           onChange={(e) => setShopId(e.target.value)}
         />
 
-        {/* BUTTON */}
         <button
           type="button"
           className="bg-blue-500 text-white py-3 rounded-xl hover:bg-blue-600 transition"
@@ -104,7 +98,6 @@ const Items = () => {
         </button>
       </form>
 
-      {/* TOAST */}
       {toast && (
         <div className="toast toast-top toast-center">
           <div className="alert alert-success">
@@ -112,7 +105,6 @@ const Items = () => {
           </div>
         </div>
       )}
-
     </div>
   );
 };
