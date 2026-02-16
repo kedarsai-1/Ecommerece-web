@@ -22,17 +22,14 @@ const Bag = () => {
         items: bagItems?.map((i) => ({
           name: i.name,
           quantity: i.quantity,
-          // Send price info; backend should construct price_data in INR
           price: i.price,
+          image: i.image,
         })),
-        customer: {
-          name: user?.FirstName ? `${user.FirstName} ${user?.LastName || ''}`.trim() : undefined,
-          email: user?.emailId || undefined,
-        },
-        // Helps backend build correct success/cancel URLs in production
-        origin: window.location.origin,
+        currency: "inr",
+        successUrl: `${window.location.origin}/checkout/success`,
+        cancelUrl: `${window.location.origin}/checkout/cancel`,
       };
-
+      
       const res = await axios.post(`${BASE_URL}/stripe/create-checkout-session`, payload, {
         withCredentials: true,
       });
