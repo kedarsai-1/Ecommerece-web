@@ -1,15 +1,11 @@
 import axios from "axios";
 import { useState } from "react";
 import { BASE_URL } from "../utils/constants";
-import { useLocation } from "react-router-dom";
-import PngUploader from "./PngUploader";
 import { useParams } from "react-router-dom";
-
-
-
+import PngUploader from "./PngUploader";
 
 const Items = () => {
-  const { shopId } = useParams();// 👈 auto received
+  const { shopId } = useParams();
 
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
@@ -19,17 +15,38 @@ const Items = () => {
   );
   const [toast, setToast] = useState(false);
 
+  // ✅ Safety guard
+  if (!shopId) {
+    return (
+      <div className="text-center mt-20 text-red-500 font-bold">
+        Invalid Shop ID
+      </div>
+    );
+  }
+
   const AddItems = async () => {
     try {
       await axios.post(
         `${BASE_URL}/shops/${shopId}/items`,
-        { name, price, description, image },
+        {
+          name,
+          price: Number(price), // ✅ numeric
+          description,
+          image,
+        },
         { withCredentials: true }
+      );
+
+      // ✅ Reset form after add
+      setName("");
+      setPrice("");
+      setDescription("");
+      setImage(
+        "https://img.freepik.com/premium-vector/add-paper-icon-vector-image-can-be-used-ui_120816-168697.jpg"
       );
 
       setToast(true);
       setTimeout(() => setToast(false), 3000);
-
     } catch (err) {
       console.log(err.message);
     }
@@ -51,6 +68,7 @@ const Items = () => {
         <input
           className="p-3 border rounded-xl"
           placeholder="Price"
+          type="number"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
@@ -69,14 +87,18 @@ const Items = () => {
           onChange={(e) => setImage(e.target.value)}
         />
 
-        <img src={image} className="w-full h-32 object-cover rounded-lg" />
+        <img
+          src={image}
+          alt="preview"
+          className="w-full h-32 object-cover rounded-lg"
+        />
 
         <div className="text-xs text-gray-500">Or upload PNG:</div>
         <PngUploader onUploaded={(url) => setImage(url)} />
 
         <button
           type="button"
-          className="bg-blue-500 text-white py-3 rounded-xl"
+          className="bg-blue-500 text-white py-3 rounded-xl hover:bg-blue-600 transition"
           onClick={AddItems}
         >
           Add Item

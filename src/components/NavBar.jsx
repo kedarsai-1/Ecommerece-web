@@ -72,7 +72,7 @@ const NavBar =({ setSearchTerm,count })=>{
           
         <li>
           {isShopOwner && (
-            <Link to ="/Sellershop" className="justify-between">
+            <Link to ="/sellershop" className="justify-between">
               Add Shops
               
             </Link>
@@ -82,11 +82,9 @@ const NavBar =({ setSearchTerm,count })=>{
            
           </Link>
           {isShopOwner && (
-            <Link to = "/items" >Add Items
+  <Link to="/sellershopview">My Shops</Link>
+)}
 
-            </Link>
-          )}
-          
 
         </li>
         <li></li>
