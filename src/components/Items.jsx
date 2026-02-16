@@ -17,7 +17,7 @@ const Items = () => {
     try {
       await axios.post(
         `${BASE_URL}/shops/${shopId}/items`,
-        { name, price, description, image, shopId },
+        { name, price, description, image},
         { withCredentials: true }
       );
 
