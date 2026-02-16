@@ -27,7 +27,7 @@ function AppWrapper() {
         <Route path="/" element={<Body />}>
           <Route index element={<Shops />} />
           <Route path ="/profile" element={<Profile/>}/>
-         <Route path ="/items" element={<Items/>}/>
+          <Route path="/items/:shopId" element={<Items />} />
           <Route path ="/sellershop" element={<Sellershop/>}/>
           <Route path = '/itemsview/:shopId' element ={<Itemsview/>}/>
           <Route path ='/bag' element={<Bag/>}/>
