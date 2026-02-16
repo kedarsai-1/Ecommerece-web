@@ -85,10 +85,11 @@ const Login = ()=>{
 
     
   <div className="min-h-screen flex justify-center items-center bg-gradient-to-r from-slate-900 to-slate-800">
-
          
-        <form className="w-full max-w-md p-10 bg-gray-300 text-white rounded-xl shadow-xl">
-
+        <form
+    className="w-full max-w-md p-10 bg-gray-300 text-white rounded-xl shadow-xl"
+    onSubmit={(e)=>e.preventDefault()}
+  >
 
          {!signin ? (
         
