@@ -1,30 +1,35 @@
 import axios from "axios";
 import { useState } from "react";
 import { BASE_URL } from "../utils/constants";
+import { useLocation } from "react-router-dom";
+import PngUploader from "./PngUploader";
 
 const Items = () => {
+  const location = useLocation();
+  const shopId = location.state?.shopId; // 👈 auto received
+
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState("");
-  const [shopId, setShopId] = useState("");
-  const [toast,setToast]= useState(false);
+  const [image, setImage] = useState(
+    "https://img.freepik.com/premium-vector/add-paper-icon-vector-image-can-be-used-ui_120816-168697.jpg"
+  );
+  const [toast, setToast] = useState(false);
 
   const AddItems = async () => {
-    try{
-        const res= await axios.post(
-      `${BASE_URL}/shops/${shopId}/items`,
-      { name, price, description, image, shopId },
-      { withCredentials: true }
-    );
-    setToast(true)
-    setTimeout(()=>{
-      setToast(false)
-    },3000)
-  }
-  catch(err){
-    console.log(err.message)
-  }
+    try {
+      await axios.post(
+        `${BASE_URL}/shops/${shopId}/items`,
+        { name, price, description, image },
+        { withCredentials: true }
+      );
+
+      setToast(true);
+      setTimeout(() => setToast(false), 3000);
+
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   return (
@@ -33,21 +38,54 @@ const Items = () => {
         className="bg-white p-6 rounded-2xl shadow-md w-96 flex flex-col gap-4"
         onSubmit={(e) => e.preventDefault()}
       >
-        <input className="p-3 border rounded-xl focus:ring-2 focus:ring-blue-400" type="text" placeholder="Name" value={name} onChange={(e)=>setName(e.target.value)} />
-        <input className="p-3 border rounded-xl focus:ring-2 focus:ring-blue-400" type="text" placeholder="Price" value={price} onChange={(e)=>setPrice(e.target.value)} />
-        <input className="p-3 border rounded-xl focus:ring-2 focus:ring-blue-400" type="text" placeholder="Description" value={description} onChange={(e)=>setDescription(e.target.value)} />
-        <input className="p-3 border rounded-xl focus:ring-2 focus:ring-blue-400" type="text" placeholder="Image" value={image} onChange={(e)=>setImage(e.target.value)} />
-        <input className="p-3 border rounded-xl focus:ring-2 focus:ring-blue-400" type="text" placeholder="Shop Id" value={shopId} onChange={(e)=>setShopId(e.target.value)} />
-        <button className="bg-blue-500 text-white py-3 rounded-xl hover:bg-blue-600 transition cursor-pointer" onClick={AddItems}>Add Item</button>
-     
-        
+        <input
+          className="p-3 border rounded-xl"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+
+        <input
+          className="p-3 border rounded-xl"
+          placeholder="Price"
+          value={price}
+          onChange={(e) => setPrice(e.target.value)}
+        />
+
+        <input
+          className="p-3 border rounded-xl"
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+
+        <input
+          className="p-3 border rounded-xl"
+          placeholder="Image URL"
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
+        />
+
+        <img src={image} className="w-full h-32 object-cover rounded-lg" />
+
+        <div className="text-xs text-gray-500">Or upload PNG:</div>
+        <PngUploader onUploaded={(url) => setImage(url)} />
+
+        <button
+          type="button"
+          className="bg-blue-500 text-white py-3 rounded-xl"
+          onClick={AddItems}
+        >
+          Add Item
+        </button>
       </form>
+
       {toast && (
         <div className="toast toast-top toast-center">
-        <div className="alert alert-success">
-          <span>Items Added successfully.</span>
+          <div className="alert alert-success">
+            <span>Items Added successfully.</span>
+          </div>
         </div>
-      </div>
       )}
     </div>
   );
