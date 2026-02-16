@@ -32,8 +32,8 @@ function AppWrapper() {
           <Route path = '/itemsview/:shopId' element ={<Itemsview/>}/>
           <Route path ='/bag' element={<Bag/>}/>
           <Route path ='/sellershopview' element={<Sellershopview/>}/>
-          <Route path ="/success" element={<Success/>}/>
-          <Route path ="/failure" element={<Failure/>}/>
+          <Route path ="/checkout/success" element={<Success/>}/>
+          <Route path ="/checkout/failure" element={<Failure/>}/>
         </Route>
       </Routes>
     </div>
