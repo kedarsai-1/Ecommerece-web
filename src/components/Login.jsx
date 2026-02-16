@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '../utils/userSlice';
 import Header from './Header';
+import { BASE_URL } from '../utils/constants';
 
 const Login = ()=>{
   const dispatch = useDispatch();
@@ -34,7 +35,7 @@ const Login = ()=>{
     const Password = password.current.value;
    
     try{
-    const res= await axios.post("http://:4545/login",{emailId,Password},{withCredentials:true})
+    const res= await axios.post(BASE_URL + "/login",{emailId,Password},{withCredentials:true})
     console.log(res)
     dispatch(addUser(res.data))
    res.data.isShopOwner === true ? navigate("/sellershopview") : navigate("/")

@@ -5,6 +5,7 @@ import { selectTotalItems } from '../utils/itemSlice';
 import { useNavigate, Outlet } from 'react-router-dom';
 import axios from 'axios';
 import NavBar from './NavBar';
+import { BASE_URL } from '../utils/constants';
 
 const Body = ()=>{
   const navigate = useNavigate();

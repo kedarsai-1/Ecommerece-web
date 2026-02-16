@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { removeUser } from "../utils/userSlice"
 import { useState } from "react"
+import { BASE_URL } from "../utils/constants"
 const NavBar =({ setSearchTerm,count })=>{
     const dispatch = useDispatch()
     const user = useSelector((store)=>store.user)
